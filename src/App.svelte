@@ -1,9 +1,9 @@
 <script>
-  import Counter from './lib/Counter.svelte'
+  import Bookmarks from './lib/Bookmarks.svelte'
 </script>
 
 <main>
   <div class="card">
-    <Counter />
+    <Bookmarks />
   </div>
 </main>
