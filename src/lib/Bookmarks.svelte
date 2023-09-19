@@ -1,7 +1,7 @@
 <script>
 
   let newBookmark = { title: "", url: "" };
-  let i = 0;
+  $: i = 0;
 
   $: bookmarks = [
     { title: "Apple", url: "www.apple.com" },
@@ -12,36 +12,47 @@
     { title: "Microsoft", url: "www.microsoft.com" },
     { title: "LinkedIn", url: "www.linkedin.com" },
   ];
+  $: selected = bookmarks[i];
+  $: getSelection(selected);
 
   function addBookmark() {
-    if (newBookmark.url != "") {
-      bookmarks = bookmarks.concat(newBookmark);
-      newBookmark = { title: "", url: "" };
-    }
+    bookmarks = bookmarks.concat(newBookmark);
+    i = bookmarks.length - 1; // Select newest bookmark
+    newBookmark = { title: "", url: "" };
   }
 
   function editBookmark() {
-
+    selected.title = newBookmark.title;
+    selected.url = newBookmark.url;
+    bookmarks = bookmarks;
   }
 
   function removeBookmark() {
+    bookmarks = bookmarks.filter(item => item != selected);
+    i = Math.min(i, bookmarks.length - 1); // Make sure selection is never lost
+    newBookmark = { title: "", url: "" };
+  }
 
+  function getSelection(x) {
+    if (x) {
+      newBookmark.title = x.title;
+      newBookmark.url = x.url;
+    } else {
+      newBookmark = { title: "", url: "" }
+    }
   }
 
 </script>
 
-<div class="bookmark-container">
-  {#each bookmarks as bookmark, i}
-    <div class="bookmark">
-      <h2>{bookmark.title}</h2>
-      <p>{bookmark.url}</p>
-    </div>
-  {/each}
-</div>
+<select bind:value={i} size={12}>
+	{#each bookmarks as bookmark, i}
+		<option value={i}>{i}, {bookmark.title}, {bookmark.url}</option>
+	{/each}
+</select>
 
 <input bind:value={newBookmark.title} placeholder="Title" />
 <input bind:value={newBookmark.url} placeholder="URL" />
 
 <button on:click={addBookmark} disabled={!newBookmark.url}>Add</button>
-<button on:click={editBookmark}>Edit</button>
-<button on:click={removeBookmark}>Remove</button>
+<button on:click={editBookmark} disabled={!newBookmark.url || !selected}>Edit</button>
+<button on:click={removeBookmark} disabled={!selected}>Remove</button>
