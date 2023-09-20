@@ -1,17 +1,10 @@
 <script>
+  import { storedBookmarks } from './bookmarks.js';
 
   let newBookmark = { title: "", url: "" };
   let i = 0;
 
-  $: bookmarks = [
-    { title: "Apple", url: "www.apple.com" },
-    { title: "Google", url: "www.google.com" },
-    { title: "Facebook", url: "www.facebook.com" },
-    { title: "Amazon", url: "www.amazon.com" },
-    { title: "Tesla", url: "www.tesla.com" },
-    { title: "Microsoft", url: "www.microsoft.com" },
-    { title: "LinkedIn", url: "www.linkedin.com" },
-  ];
+  $: bookmarks = storedBookmarks;
   $: selected = bookmarks[i];
   $: getSelection(selected);
 
