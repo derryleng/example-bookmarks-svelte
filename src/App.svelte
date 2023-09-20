@@ -3,7 +3,5 @@
 </script>
 
 <main>
-  <div class="card">
-    <Bookmarks />
-  </div>
+  <Bookmarks />
 </main>
