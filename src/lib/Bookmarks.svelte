@@ -1,7 +1,7 @@
 <script>
 
   let newBookmark = { title: "", url: "" };
-  $: i = 0;
+  let i = 0;
 
   $: bookmarks = [
     { title: "Apple", url: "www.apple.com" },
@@ -16,13 +16,15 @@
   $: getSelection(selected);
 
   function addBookmark() {
-    bookmarks = bookmarks.concat(newBookmark);
-    i = bookmarks.length - 1; // Select newest bookmark
-    newBookmark = { title: "", url: "" };
+    if (newBookmark.url) {
+      bookmarks = bookmarks.concat(newBookmark);
+      i = bookmarks.length - 1; // Select newest bookmark
+      newBookmark = { title: "", url: "" };
+    }
   }
 
   function editBookmark() {
-    if (selected) {
+    if (selected && newBookmark.url) {
       selected.title = newBookmark.title;
       selected.url = newBookmark.url;
       bookmarks = bookmarks;
@@ -84,7 +86,3 @@
   <button on:click={moveUp} disabled={!selected || bookmarks.indexOf(selected) < 1}>Move Up</button>
   <button on:click={moveDown} disabled={!selected || bookmarks.indexOf(selected) > bookmarks.length - 2}>Move Down</button>
 </div>
-
-
-
-
